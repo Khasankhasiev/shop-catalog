@@ -1,40 +1,44 @@
 <template>
-  <div>
-    <button @click="addLike">Like</button>
-    <button @click="addDislike">Dislike</button>
-  </div>
-
-  <div>
-    Кол-во лайков <strong>{{ likes }}</strong>
-  </div>
-  <div>
-    Кол-во дизлайков <strong>{{ dislikes }}</strong>
-  </div>
+  <div class="app"></div>
 </template>
 
 <script>
 export default {
   data() {
     return {
-      likes: 0,
-      dislikes: 0,
+      posts: [
+        { id: 1, title: "Javascript", body: "Описание поста 1" },
+        { id: 2, title: "Javascript", body: "Описание поста 2" },
+        { id: 3, title: "Javascript", body: "Описание поста 3" },
+        { id: 4, title: "Javascript", body: "Описание поста 4" },
+      ],
+      title: "",
+      body: "",
     };
   },
   methods: {
-    addLike() {
-      this.likes += 1;
-    },
-
-    addDislike() {
-      this.dislikes += 1;
+    createPost() {
+      const newPost = {
+        id: Date.now(),
+        title: this.title,
+        body: this.body,
+      };
+      this.posts.push(newPost);
+      this.title = "";
+      this.body = "";
     },
   },
-  //   mounted() {
-  //     setInterval(() => {
-  //       this.likes++;
-  //     }, 1000);
-  //   },
 };
 </script>
 
-<style></style>
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.app {
+  padding: 20px;
+}
+</style>
