@@ -26,4 +26,8 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+h3 {
+  margin-top: 20px;
+}
+</style>
