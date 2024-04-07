@@ -2,7 +2,7 @@
   <div class="post">
     <div>
       <div><strong>Название:</strong> {{ post.title }}</div>
-      <div><strong>Описание:</strong>{{ post.body }}</div>
+      <div style="margin: 10px"><strong>Описание:</strong>{{ post.body }}</div>
     </div>
     <div class="post__btns">
       <my-button @click="$emit('remove', post)">Удалить</my-button>
