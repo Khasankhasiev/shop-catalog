@@ -1,15 +1,20 @@
 <template>
   <div class="app">
     <h1>Страница с постами</h1>
-    <my-button style="margin-bottom: 10px" @click="showDialog"
-      >Создать пост</my-button
-    >
+    <div class="app__btns">
+      <my-button @click="showDialog">Создать пост</my-button>
+      <my-select v-model="selectedSort" :options="sortOptions" />
+    </div>
 
     <my-dialog v-model:show="dialogVisible">
       <post-form @create="createPost" />
     </my-dialog>
 
-    <post-list v-if="!isPostsLoading" :posts="posts" @remove="removePost" />
+    <post-list
+      v-if="!isPostsLoading"
+      :posts="sortedPosts"
+      @remove="removePost"
+    />
     <div v-else>Идет загрузка...</div>
   </div>
 </template>
@@ -28,6 +33,11 @@ export default {
       posts: [],
       dialogVisible: false,
       isPostsLoading: false,
+      selectedSort: "",
+      sortOptions: [
+        { value: "title", name: "По названию" },
+        { value: "body", name: "По содержанию" },
+      ],
     };
   },
   methods: {
@@ -51,16 +61,27 @@ export default {
             "https://jsonplaceholder.typicode.com/posts?_limit=10"
           );
           this.posts = response.data;
-        }, 2000);
+          // console.log(response);
+          this.isPostsLoading = false;
+        }, 1000);
       } catch (error) {
         alert("Error");
       } finally {
-        this.isPostsLoading = false;
+        // this.isPostsLoading = false;
       }
     },
   },
   mounted() {
     this.fetchPosts();
+  },
+  computed: {
+    sortedPosts() {
+      return [...this.posts].sort((post1, post2) => {
+        return post1[this.selectedSort]?.localeCompare(
+          post2[this.selectedSort]
+        );
+      });
+    },
   },
 };
 </script>
@@ -78,5 +99,11 @@ export default {
 
 h1 {
   margin-bottom: 20px;
+}
+
+.app__btns {
+  display: flex;
+  justify-content: space-between;
+  margin: 15px 0;
 }
 </style>
