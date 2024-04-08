@@ -61,13 +61,11 @@ export default {
             "https://jsonplaceholder.typicode.com/posts?_limit=10"
           );
           this.posts = response.data;
-          // console.log(response);
           this.isPostsLoading = false;
         }, 1000);
       } catch (error) {
         alert("Error");
       } finally {
-        // this.isPostsLoading = false;
       }
     },
   },
