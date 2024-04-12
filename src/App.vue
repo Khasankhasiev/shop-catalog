@@ -17,6 +17,19 @@
       @remove="removePost"
     />
     <div v-else>Идет загрузка...</div>
+    <div class="page__wrapper">
+      <div
+        v-for="pageNumber in totalPages"
+        :key="pageNumber"
+        class="page"
+        :class="{
+          'current-page': page === pageNumber,
+        }"
+        @click="changePage(pageNumber)"
+      >
+        {{ pageNumber }}
+      </div>
+    </div>
   </div>
 </template>
 
@@ -24,6 +37,7 @@
 import PostForm from "@/components/PostForm.vue";
 import PostList from "@/components/PostList.vue";
 import axios from "axios";
+import { watch } from "vue";
 
 export default {
   components: {
@@ -37,6 +51,9 @@ export default {
       isPostsLoading: false,
       selectedSort: "",
       searchQuery: "",
+      page: 1,
+      limit: 10,
+      totalPages: 0,
       sortOptions: [
         { value: "title", name: "По названию" },
         { value: "body", name: "По содержанию" },
@@ -56,12 +73,25 @@ export default {
       this.dialogVisible = true;
     },
 
+    changePage(pageNumber) {
+      this.page = pageNumber;
+    },
+
     async fetchPosts() {
       try {
         this.isPostsLoading = true;
         setTimeout(async () => {
           const response = await axios.get(
-            "https://jsonplaceholder.typicode.com/posts?_limit=10"
+            "https://jsonplaceholder.typicode.com/posts?",
+            {
+              params: {
+                _page: this.page,
+                _limit: this.limit,
+              },
+            }
+          );
+          this.totalPages = Math.ceil(
+            response.headers["x-total-count"] / this.limit
           );
           this.posts = response.data;
           this.isPostsLoading = false;
@@ -85,8 +115,17 @@ export default {
     },
     sortedAndSearchedPosts() {
       return this.sortedPosts.filter((post) =>
-        post.title.toLowerCase().includes(this.searchQuery.toLowerCase())
+        post.title
+          .toLowerCase()
+          .trim()
+          .includes(this.searchQuery.toLowerCase().trim())
       );
+    },
+  },
+
+  watch: {
+    page() {
+      this.fetchPosts();
     },
   },
 };
@@ -111,5 +150,20 @@ h1 {
   display: flex;
   justify-content: space-between;
   margin: 15px 0;
+}
+
+.page__wrapper {
+  display: flex;
+  margin-top: 15px;
+}
+
+.page {
+  border: 1px solid black;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.current-page {
+  border: 2px solid teal;
 }
 </style>
