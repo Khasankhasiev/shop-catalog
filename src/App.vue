@@ -17,7 +17,8 @@
       @remove="removePost"
     />
     <div v-else>Идет загрузка...</div>
-    <div class="page__wrapper">
+    <div ref="observer" class="observer"></div>
+    <!-- <div class="page__wrapper">
       <div
         v-for="pageNumber in totalPages"
         :key="pageNumber"
@@ -29,7 +30,7 @@
       >
         {{ pageNumber }}
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -73,29 +74,50 @@ export default {
       this.dialogVisible = true;
     },
 
-    changePage(pageNumber) {
-      this.page = pageNumber;
-    },
+    // changePage(pageNumber) {
+    //   this.page = pageNumber;
+    // },
 
     async fetchPosts() {
       try {
         this.isPostsLoading = true;
-        setTimeout(async () => {
-          const response = await axios.get(
-            "https://jsonplaceholder.typicode.com/posts?",
-            {
-              params: {
-                _page: this.page,
-                _limit: this.limit,
-              },
-            }
-          );
-          this.totalPages = Math.ceil(
-            response.headers["x-total-count"] / this.limit
-          );
-          this.posts = response.data;
-          this.isPostsLoading = false;
-        }, 1000);
+
+        const response = await axios.get(
+          "https://jsonplaceholder.typicode.com/posts?",
+          {
+            params: {
+              _page: this.page,
+              _limit: this.limit,
+            },
+          }
+        );
+        this.totalPages = Math.ceil(
+          response.headers["x-total-count"] / this.limit
+        );
+        this.posts = response.data;
+        this.isPostsLoading = false;
+      } catch (error) {
+        alert("Error");
+      } finally {
+      }
+    },
+    async loadMorePosts() {
+      try {
+        this.page += 1;
+
+        const response = await axios.get(
+          "https://jsonplaceholder.typicode.com/posts?",
+          {
+            params: {
+              _page: this.page,
+              _limit: this.limit,
+            },
+          }
+        );
+        this.totalPages = Math.ceil(
+          response.headers["x-total-count"] / this.limit
+        );
+        this.posts = [...this.posts, ...response.data];
       } catch (error) {
         alert("Error");
       } finally {
@@ -104,6 +126,19 @@ export default {
   },
   mounted() {
     this.fetchPosts();
+
+    let options = {
+      root: document.querySelector("#scrollArea"),
+      rootMargin: "0px",
+      threshold: 1.0,
+    };
+    let callback = (entries, observer) => {
+      if (entries[0].isIntersecting) {
+        this.loadMorePosts();
+      }
+    };
+    let observer = new IntersectionObserver(callback, options);
+    observer.observe(this.$refs.observer);
   },
   computed: {
     sortedPosts() {
@@ -124,9 +159,9 @@ export default {
   },
 
   watch: {
-    page() {
-      this.fetchPosts();
-    },
+    // page() {
+    //   this.fetchPosts();
+    // },
   },
 };
 </script>
@@ -165,5 +200,10 @@ h1 {
 
 .current-page {
   border: 2px solid teal;
+}
+
+.observer {
+  height: 30px;
+  background-color: green;
 }
 </style>
