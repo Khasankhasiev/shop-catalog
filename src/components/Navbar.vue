@@ -3,7 +3,7 @@
     <div @click="$router.push('./')" style="cursor: pointer">Vue 3</div>
     <div class="navbar__btns">
       <my-button @click="$router.push('/posts')">Посты </my-button>
-      <my-button style="margin-left: 15px" @click="$router.push('./about')"
+      <my-button style="margin-left: 15px" @click="$router.push('/about')"
         >О сайте
       </my-button>
     </div>
