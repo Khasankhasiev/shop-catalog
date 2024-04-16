@@ -17,7 +17,7 @@
       @remove="removePost"
     />
     <div v-else>Идет загрузка...</div>
-    <div ref="observer" class="observer"></div>
+    <div v-intersection="loadMorePosts" class="observer"></div>
     <!-- <div class="page__wrapper">
        <div
          v-for="pageNumber in totalPages"
@@ -126,19 +126,6 @@ export default {
   },
   mounted() {
     this.fetchPosts();
-
-    let options = {
-      root: document.querySelector("#scrollArea"),
-      rootMargin: "0px",
-      threshold: 1.0,
-    };
-    let callback = (entries, observer) => {
-      if (entries[0].isIntersecting) {
-        this.loadMorePosts();
-      }
-    };
-    let observer = new IntersectionObserver(callback, options);
-    observer.observe(this.$refs.observer);
   },
   computed: {
     sortedPosts() {
