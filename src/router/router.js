@@ -1,10 +1,10 @@
-import Main from '@/pages/MainPage';
+import Catalog from '@/pages/catalogPage/CatalogPage';
 import { createRouter, createWebHistory } from 'vue-router';
 
 const routes = [
     {
         path: '/',
-        component: Main,
+        component: Catalog,
     },
 ];
 
