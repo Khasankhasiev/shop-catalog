@@ -4,11 +4,20 @@
             <img src="@/assets/images/logo-image.svg" alt="Логотип" />
             Логотип
         </HeaderLink>
-        <HeaderLink class="header__item header__catalog">Каталог</HeaderLink>
+        <HeaderLink
+            class="header__item header__catalog"
+            :class="{ 'header-active': isActive('/catalog') }"
+            @click="$router.push('/catalog')"
+            >Каталог</HeaderLink
+        >
         <MainInput class="header__input" />
 
         <div class="header__info-list">
-            <HeaderLink>Информация о компании</HeaderLink>
+            <HeaderLink
+                :class="{ 'header-active': isActive('/company') }"
+                @click="$router.push('/company')"
+                >Информация о компании</HeaderLink
+            >
             <HeaderLink>Контакты</HeaderLink>
             <HeaderLink>Полезные ссылки</HeaderLink>
         </div>
@@ -16,11 +25,24 @@
 </template>
 
 <script setup>
+import { useRoute } from 'vue-router';
+import { computed } from 'vue';
 import MainInput from '@/components/header/components/HeaderInput.vue';
 import HeaderLink from '@/components/header/components/HeaderLink.vue';
+
+const route = useRoute();
+
+const isActive = path => {
+    return route.path === path;
+};
 </script>
 
 <style scoped lang="scss">
+.header-active {
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+}
+
 .header {
     font-family: 'Inter';
     height: 72px;
@@ -39,8 +61,6 @@ import HeaderLink from '@/components/header/components/HeaderLink.vue';
     }
 
     &__catalog {
-        border: 1px solid var(--border-color);
-        border-radius: 8px;
         margin-right: 23px;
         cursor: pointer;
         transition: border-color 0.3s ease, transform 0.1s ease, color 0.3s ease,
@@ -60,6 +80,7 @@ import HeaderLink from '@/components/header/components/HeaderLink.vue';
     }
 
     &__info-list {
+        margin-left: 23px;
         display: flex;
         align-items: center;
         gap: 20px;
