@@ -1,8 +1,13 @@
 <template>
-    <input class="input" type="text" />
+    <input class="input" type="text" v-model="inputValue" />
 </template>
 
-<script setup></script>
+<script setup>
+import { ref } from 'vue';
+
+// Создаем реактивную переменную для хранения значения инпута
+const inputValue = ref('');
+</script>
 
 <style scoped lang="scss">
 .input {

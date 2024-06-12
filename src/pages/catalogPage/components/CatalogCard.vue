@@ -20,12 +20,22 @@
             <div class="new-price">5 990</div>
             <div class="old-price">5 990</div>
         </div>
-        <CardButton>Купить</CardButton>
+        <button v-if="!activeBtn" class="card__buy-button" type="button">
+            Купить
+        </button>
+        <button v-else class="card__message-button" type="button">
+            Сообщить о поступлении
+        </button>
     </div>
 </template>
 
 <script setup>
-import CardButton from './CardButton';
+const props = defineProps({
+    activeBtn: {
+        type: Boolean,
+        required: false,
+    },
+});
 </script>
 
 <style lang="scss" scoped>
@@ -106,6 +116,48 @@ import CardButton from './CardButton';
                 color: var(--stroke-color);
                 text-decoration: line-through;
             }
+        }
+    }
+    &__buy-button {
+        padding: 10px 15px;
+        outline: none;
+        background: none;
+        border: 1px solid var(--button-text-color);
+        border-radius: 4px;
+        cursor: pointer;
+        color: rgb(115, 151, 245);
+        font-size: 14px;
+        transition: border-color 0.3s ease, transform 0.1s ease, color 0.3s ease,
+            box-shadow 0.1s ease;
+        &:hover {
+            border-color: var(--border-hover);
+            color: var(--border-hover);
+        }
+        &:active {
+            transform: translateY(0px);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+    }
+    &__message-button {
+        color: rgb(170, 170, 170);
+        font-size: 14px;
+        font-weight: 700;
+        outline: none;
+        background: none;
+        padding: 12px 16px;
+        border: 1px solid rgb(170, 170, 170);
+        border-radius: 4px;
+        transition: border-color 0.3s ease, transform 0.1s ease, color 0.3s ease,
+            box-shadow 0.1s ease;
+        &:hover {
+            border-color: rgb(78, 74, 74);
+            color: rgb(71, 65, 65);
+        }
+        &:active {
+            transform: translateY(
+                0px
+            ); /* Перемещение кнопки вниз при нажатии */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Тень кнопки при нажатии */
         }
     }
 }

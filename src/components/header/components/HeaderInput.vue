@@ -5,12 +5,18 @@
             id="input"
             type="text"
             placeholder="Поиск по 100 000 товаров"
+            v-model="searchQuery"
         />
         <div class="input-placeholder"></div>
     </div>
 </template>
 
-<script setup></script>
+<script setup>
+import { ref } from 'vue';
+
+// Создаем реактивную переменную для хранения значения инпута
+const searchQuery = ref('');
+</script>
 
 <style scoped lang="scss">
 .input-wrapper {

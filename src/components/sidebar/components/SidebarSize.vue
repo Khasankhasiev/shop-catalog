@@ -54,6 +54,28 @@ import Checkbox from './SidebarCheckbox.vue';
         display: flex;
         flex-direction: column;
         gap: 16px;
+        height: 180px;
+        overflow-y: auto;
+        &::-webkit-scrollbar {
+            width: 3px; /* ширина скроллбара */
+        }
+
+        /* Полоса прокрутки */
+        &::-webkit-scrollbar-track {
+            background: #fff; /* цвет фона полосы прокрутки */
+            border-radius: 10px; /* скругление углов полосы прокрутки */
+        }
+
+        /* Ползунок/бегунок прокрутки */
+        &::-webkit-scrollbar-thumb {
+            background: rgb(203, 203, 203); /* цвет бегунка */
+            border-radius: 10px; /* скругление углов бегунка */
+        }
+
+        /* При наведении на бегунок */
+        &::-webkit-scrollbar-thumb:hover {
+            background: rgb(228, 204, 204); /* цвет бегунка при наведении */
+        }
     }
     &-attribute-item {
         font-size: 14px;
@@ -64,6 +86,7 @@ import Checkbox from './SidebarCheckbox.vue';
     &-attribute-count {
         color: var(--stroke-color);
         font-size: 12px;
+        margin-right: 13px;
     }
 }
 </style>

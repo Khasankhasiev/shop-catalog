@@ -16,7 +16,7 @@
 </template>
 
 <script setup>
-import MainInput from '@/components/header/components/MainInput.vue';
+import MainInput from '@/components/header/components/HeaderInput.vue';
 import HeaderLink from '@/components/header/components/HeaderLink.vue';
 </script>
 
@@ -43,9 +43,15 @@ import HeaderLink from '@/components/header/components/HeaderLink.vue';
         border-radius: 8px;
         margin-right: 23px;
         cursor: pointer;
+        transition: border-color 0.3s ease, transform 0.1s ease, color 0.3s ease,
+            box-shadow 0.1s ease;
         &:hover {
             border-color: var(--border-hover);
             color: var(--border-hover);
+        }
+        &:active {
+            transform: translateY(0px);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
         }
     }
 
